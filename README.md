@@ -1,5 +1,5 @@
 # Relatório-de-Exploração-e-Correção-de-Vulnerabilidades-MQTT-Broker
-Este relatório documenta a atividade de exploração e correção de vulnerabilidades em um broker MQTT. Esse realtório envolve a clonagem de um repositório GitHub, construção de containers Docker, configuração de um broker MQTT, envio de mensagens, teste de vulnerabilidades e implementação de controles de acesso para mitigar as vulnerabilidades.
+Esse relatório documenta a atividade de exploração e correção de vulnerabilidades em um broker MQTT. Envolvendo a clonagem de um repositório GitHub, construção de containers Docker, configuração de um broker MQTT, envio de mensagens, teste de vulnerabilidades e implementação de controles de acesso para mitigar as vulnerabilidades.
 
 # Disciplina: Pentest em Aplicações Web
 
@@ -80,6 +80,51 @@ Tendo o risco de qualquer usuário e cliente assinar e publicar.
 
 ## 12.3. Os tópicos são abertos e não tem ACL.
 Quaisquer dos tópicos não tem restrições, sendo disponível a publicação e assinatura.
+
+# 13.0. Fazendo Correções necessárias 
+
+## 13.1. Atualizando o Mosquitto
+<img width="781" height="140" alt="image" src="https://github.com/user-attachments/assets/ecfb0277-7c7d-47ad-8b74-5fd2d2ac8d35" />
+Essa evidência mostra a necessária alteração da versão do mosquitto para a 2.0.22, que garante mais segurança, com os últimos patches de segurança.
+
+## 13.2. Habilitando o TLS na Configuração (mosquitto.conf).
+
+### listener 8883
+### protocol mqtt
+### cafile /mosquitto/certs/ca.crt
+### certfile /mosquitto/certs/server.crt
+### keyfile /mosquitto/certs/server.key
+### require_certificate false
+### tls_version tlsv1.2
+<img width="438" height="276" alt="image" src="https://github.com/user-attachments/assets/a7263576-0b4b-4ff8-9227-7389fb5bef75" />
+
+A evidência mostra que a comunicação passou a ser realizada de forma criptografada pela porta 8883. O cliente ou usuário pode se conectar utilizando o certificado da CA (ca.crt), automaticamente validando, garantindo confidencialidade e integridade no manuseio dos dados.
+
+# 14.0. Senhas e Usuários.
+
+## 14.1. Com a configuração feita no broker:
+
+### allow_anonymous false
+### password_file /mosquitto/passwd
+Apenas os usuários conseguem acessar no broker. As conexões anônimas ou com senhas inválidas são recusadas.
+<img width="425" height="41" alt="image" src="https://github.com/user-attachments/assets/c0ae8f3f-788f-4608-97d7-4a306666c474" />
+
+# 15.0. Controle do (ACL)
+
+## 15.1. Arquivo ACL 
+<img width="515" height="149" alt="image" src="https://github.com/user-attachments/assets/194d604c-fc6c-49ba-a5a5-64052891743d" />
+
+Com essa configuração do ACL apenas o usuário sensor1 pode publicar no tópico sensors/temperature. Além também de o usuário viewer poder apenas assinar os tópicos em "sensors/#".
+
+# Conclusão
+<img width="533" height="68" alt="Captura de tela 2025-09-05 202118" src="https://github.com/user-attachments/assets/180e3ac5-b867-43eb-92b9-3c865858a40f" />
+<img width="622" height="167" alt="Captura de tela 2025-09-05 201856" src="https://github.com/user-attachments/assets/8d0f910d-2ca5-458f-a58e-fc60d337ce69" />
+<img width="586" height="290" alt="Captura de tela 2025-09-05 201750" src="https://github.com/user-attachments/assets/6482d688-3eec-4a2f-9bf5-e4d1e70ec05f" />
+
+
+### Ao fim desse relatório concluo que consegui realizar as atividades básicas que foram encarregadas a mim, alguns dos objetivos a serem cumpridos com esse relatório, não consegui atingi-los, acredito que tive um desempenho rasuável, não realizei uma atividade que atingiu todas as tarefas propostas, mas pelo menos dei o meu máximo, até o limite de meus conhecimentos na área. Com isso acredito que no fim esse relatório identifica algumas vulnerabilidades específicas e corrige falhas como a configuração do TLS, para tentar garantir confidencialidade e integridade contra ataques aos dados, também a correção na cofiguração do ACL para tentar assegurar que os clientes e usuários só possam publicar ou assinar quando forem autorizados e por fim  atualizar ou alterar configurações como a do Mosquitto.conf para garantir um pouco mais segurança, com patches de segurança.
+
+
 
 
 
