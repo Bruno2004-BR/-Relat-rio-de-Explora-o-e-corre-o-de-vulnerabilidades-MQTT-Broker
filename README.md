@@ -1,2 +1,2 @@
-# -Relatório-de-Exploração-e-Correção-de-Vulnerabilidades-MQTT-Broker
+# Relatório-de-Exploração-e-Correção-de-Vulnerabilidades-MQTT-Broker
 Este relatório documenta a atividade de exploração e correção de vulnerabilidades em um broker MQTT. Esse realtório envolve a clonagem de um repositório GitHub, construção de containers Docker, configuração de um broker MQTT, envio de mensagens, teste de vulnerabilidades e implementação de controles de acesso para mitigar as vulnerabilidades.
